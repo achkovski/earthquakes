@@ -11,4 +11,6 @@ public interface EarthquakeService {
     EarthquakeDto getById(Long id);
 
     void deleteById(Long id);
+
+    int refreshFromUsgs();
 }
