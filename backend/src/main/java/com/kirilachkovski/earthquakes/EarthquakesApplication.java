@@ -13,6 +13,7 @@ public class EarthquakesApplication {
 
     static void main(String[] args) {
         SpringApplication.run(EarthquakesApplication.class, args);
+        IO.println("Application has started running...");
     }
 
 }
