@@ -4,7 +4,6 @@ import com.kirilachkovski.earthquakes.dto.EarthquakeDto;
 import com.kirilachkovski.earthquakes.service.EarthquakeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
