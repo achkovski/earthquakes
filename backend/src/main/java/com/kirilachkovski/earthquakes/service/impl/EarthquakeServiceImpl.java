@@ -8,16 +8,18 @@ import com.kirilachkovski.earthquakes.entity.Earthquake;
 import com.kirilachkovski.earthquakes.repository.EarthquakeRepository;
 import com.kirilachkovski.earthquakes.service.EarthquakeService;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Slf4j
@@ -30,8 +32,22 @@ public class EarthquakeServiceImpl implements EarthquakeService {
     private final UsgsEarthquakeClient usgsEarthquakeClient;
 
     @Override
-    public List<EarthquakeDto> getAll() {
-        return earthquakeRepository.findAll().stream()
+    public List<EarthquakeDto> getAll(Optional<Instant> after, Optional<BigDecimal> minMagnitude) {
+        Specification<Earthquake> spec = (root, query, builder) -> {
+            List<Predicate> predicates = new ArrayList<>();
+
+            after.ifPresent(value -> predicates.add(
+                    builder.greaterThanOrEqualTo(root.get("eventTime"), value)
+            ));
+
+            minMagnitude.ifPresent(value -> predicates.add(
+                    builder.greaterThanOrEqualTo(root.get("magnitude"), value)
+            ));
+
+            return builder.and(predicates.toArray(new Predicate[0]));
+        };
+
+        return earthquakeRepository.findAll(spec).stream()
                 .map(EarthquakeDto::from)
                 .toList();
     }
@@ -95,8 +111,7 @@ public class EarthquakeServiceImpl implements EarthquakeService {
                 .magType(feature.properties().magType())
                 .place(feature.properties().place())
                 .title(feature.properties().title())
-                .eventTime(OffsetDateTime.ofInstant(
-                        Instant.ofEpochMilli(feature.properties().time()), ZoneOffset.UTC))
+                .eventTime(Instant.ofEpochMilli(feature.properties().time()))
                 .longitude(coords.get(0))
                 .latitude(coords.get(1))
                 .depth(coords.size() >= 3 ? coords.get(2) : null)

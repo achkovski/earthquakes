@@ -3,7 +3,7 @@ package com.kirilachkovski.earthquakes.dto;
 import com.kirilachkovski.earthquakes.entity.Earthquake;
 
 import java.math.BigDecimal;
-import java.time.OffsetDateTime;
+import java.time.Instant;
 
 public record EarthquakeDto(
         Long id,
@@ -12,7 +12,7 @@ public record EarthquakeDto(
         String magType,
         String place,
         String title,
-        OffsetDateTime eventTime,
+        Instant eventTime,
         BigDecimal longitude,
         BigDecimal latitude,
         BigDecimal depth

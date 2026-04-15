@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.time.OffsetDateTime;
+import java.time.Instant;
 
 @Entity
 @Table(name = "earthquakes")
@@ -44,7 +44,7 @@ public class Earthquake {
     private String title;
 
     @Column(name = "event_time", nullable = false)
-    private OffsetDateTime eventTime;
+    private Instant eventTime;
 
     @Column(precision = 9, scale = 4)
     private BigDecimal longitude;
