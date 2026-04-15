@@ -92,6 +92,7 @@ talks to the backend at `http://localhost:8080`.
 ## Assumptions
 
 - Earthquake data is refreshed on demand via `POST /api/earthquakes/refresh`, there is no scheduled job.
+- Required filtering for earthquakes with magnitude greater than 2.0 was not specified if it needs to be from an api filter, or filtered before storing in the database; api filtering implemented
 - The USGS `all_day.geojson` feed is used as the default source; other feeds can be swapped in via `earthquakes.usgs.feed` in `application.properties`.
 - `external_id` from USGS is treated as the stable deduplication key, so repeated refreshes upsert rather than create duplicates.
 - All timestamps are stored and returned in `Instant` per latest guidelines.
