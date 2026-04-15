@@ -12,7 +12,9 @@ function QuakeList({ quakes }) {
           </tr>
         </thead>
         <tbody>
-          {quakes.map((q) => (
+          {[...quakes]
+            .sort((a, b) => new Date(b.eventTime) - new Date(a.eventTime))
+            .map((q) => (
             <tr key={q.id}>
               <td>{new Date(q.eventTime).toLocaleString()}</td>
               <td>{Number(q.magnitude).toFixed(1)}</td>
